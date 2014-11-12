@@ -38,6 +38,9 @@ module.exports = Service = (function() {
   Service.prototype.next = function() {
     var members, result;
     members = this.members();
+    if (members.length === 0) {
+      return null;
+    }
     this._index = this._index % members.length;
     result = members[this._index];
     this._index++;

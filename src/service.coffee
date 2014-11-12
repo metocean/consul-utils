@@ -16,6 +16,7 @@ module.exports = class Service
   
   next: =>
     members = @members()
+    return null if members.length is 0
     @_index = @_index % members.length
     result = members[@_index]
     @_index++

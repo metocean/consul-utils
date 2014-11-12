@@ -48,7 +48,7 @@ module.exports = Watch = (function() {
     if (this._index != null) {
       params.path += "&index=" + this._index;
     }
-    return http.get(params, (function(_this) {
+    return this._httpRequest = http.get(params, (function(_this) {
       return function(res) {
         var error;
         res.setEncoding('utf8');
@@ -85,6 +85,9 @@ module.exports = Watch = (function() {
   };
 
   Watch.prototype._handleError = function(error) {
+    if ((this._fin != null) && this._fin) {
+      return;
+    }
     console.error('Consul <-> RedWire error');
     console.error(error);
     console.error("Retrying in " + this._options.retry + " seconds...");
@@ -92,7 +95,10 @@ module.exports = Watch = (function() {
   };
 
   Watch.prototype.end = function() {
-    return this._fin = true;
+    this._fin = true;
+    if (this._httpRequest != null) {
+      return this._httpRequest.abort();
+    }
   };
 
   return Watch;

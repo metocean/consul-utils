@@ -34,7 +34,7 @@ module.exports = class Watch
     
     params.path += "&index=#{@_index}" if @_index?
     
-    http
+    @_httpRequest = http
       .get params, (res) =>
         res.setEncoding 'utf8'
         if res.statusCode isnt 200
@@ -53,6 +53,7 @@ module.exports = class Watch
     setTimeout @_request, 0
   
   _handleError: (error) =>
+    return if @_fin? and @_fin
     console.error 'Consul <-> RedWire error'
     console.error error
     console.error "Retrying in #{@_options.retry} seconds..."
@@ -60,3 +61,4 @@ module.exports = class Watch
   
   end: =>
     @_fin = yes
+    @_httpRequest.abort() if @_httpRequest?

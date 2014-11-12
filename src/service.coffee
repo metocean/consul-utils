@@ -1,11 +1,11 @@
-ConsulWatch = require './consul-watch'
+Watch = require './watch'
 DiffPool = require './diff-pool'
 
-module.exports = class RedWireConsulService
+module.exports = class Service
   constructor: (httpAddr, serviceId, callback) ->
     @_index = 0
     @_pool = new DiffPool callback
-    @_watch = new ConsulWatch "#{httpAddr}/v1/catalog/service/#{serviceId}", (services) =>
+    @_watch = new Watch "#{httpAddr}/v1/catalog/service/#{serviceId}", (services) =>
       @_pool.set services.map (s) ->
         host: s.Node
         address: s.Address

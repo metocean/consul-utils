@@ -1,7 +1,7 @@
 http = require 'http'
 url_parse = require('url').parse
 
-module.exports = class ConsulWatch
+module.exports = class Watch
   # options is optional
   constructor: (service, options, callback) ->
     # defaults

@@ -34,5 +34,5 @@ module.exports = class DiffPool
     
     @_items = next
     
-    if added.length isnt 0 or removed.length isnt 0
+    if @_callback? and added.length isnt 0 or removed.length isnt 0
       @_callback added, removed

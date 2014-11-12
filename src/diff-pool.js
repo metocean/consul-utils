@@ -47,7 +47,7 @@ module.exports = DiffPool = (function() {
       added.push(i);
     }
     this._items = next;
-    if (added.length !== 0 || removed.length !== 0) {
+    if ((this._callback != null) && added.length !== 0 || removed.length !== 0) {
       return this._callback(added, removed);
     }
   };

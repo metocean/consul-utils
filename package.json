@@ -1,0 +1,29 @@
+{
+  "name": "redwire-consul",
+  "version": "0.1.0",
+  "description": "Consul integration for RedWire - a dynamic, high performance, load balancing reverse proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.js --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metocean/redwire-consul.git"
+  },
+  "keywords": [
+    "consul",
+    "reverse-proxy",
+    "proxy",
+    "load-balancer"
+  ],
+  "author": "Thomas Coats",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/metocean/redwire-consul/issues"
+  },
+  "homepage": "https://github.com/metocean/redwire-consul",
+  "devDependencies": {
+    "chai": "1.*",
+    "mocha": "2.*"
+  }
+}

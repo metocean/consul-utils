@@ -19,7 +19,7 @@ module.exports = class Service
     @_index = @_index % members.length
     result = members[@_index]
     @_index++
-    result
+    "http://#{result.address}:#{result.port}"
   
   distribute: => (mount, url, req, res, next) =>
     req.target = @next()

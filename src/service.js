@@ -41,7 +41,7 @@ module.exports = Service = (function() {
     this._index = this._index % members.length;
     result = members[this._index];
     this._index++;
-    return result;
+    return "http://" + result.address + ":" + result.port;
   };
 
   Service.prototype.distribute = function() {

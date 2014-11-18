@@ -37,17 +37,28 @@ module.exports = class Watch
     @_httpRequest = http
       .get params, (res) =>
         res.setEncoding 'utf8'
+        if res.statusCode is 404
+          res.on 'data', ->
+          return res.on 'end', => @_handle404()
+        
+        if res.statusCode is 500
+          error = ''
+          res.on 'data', (data) => error += data
+          return res.on 'end', => @_handleError error
+        
         if res.statusCode isnt 200
           error = ''
           res.on 'data', (data) => error += data
-          res.on 'end', => @_handleError error
-          return
+          return res.on 'end', => @_handleError
+            code: res.statusCode
+            error: error
         
         res.on 'data', (data) => @_callback JSON.parse data
         res.on 'end', => @_tick res.headers['x-consul-index']
       .on 'error', (e) => @_handleError e
   
   _tick: (index) =>
+    delete @_had404
     @_index = index
     return if @_fin? and @_fin
     setTimeout @_request, 0
@@ -57,6 +68,13 @@ module.exports = class Watch
     console.error 'Consul <-> RedWire error'
     console.error error
     console.error "Retrying in #{@_options.retry} seconds..."
+    setTimeout @_request, @_options.retry * 1000
+  
+  _handle404: =>
+    if !@_had404?
+      console.log "Consul <-> RedWire 404 #{@_service.href}"
+      console.log "Silently retrying every #{@_options.retry} seconds..."
+      @_had404 = yes
     setTimeout @_request, @_options.retry * 1000
   
   end: =>

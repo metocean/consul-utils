@@ -1,5 +1,6 @@
 http = require 'http'
 url_parse = require('url').parse
+qs = require 'querystring'
 
 module.exports = class Watch
   # options is optional
@@ -25,14 +26,16 @@ module.exports = class Watch
     @_request()
   
   _request: =>
+    query = qs.parse @_service.query
+    query.wait = "#{@_options.wait}s"
+    query.index = @_index if @_index?
+    
     params =
       hostname: @_service.hostname
       port: @_service.port
-      path: "#{@_service.href}?wait=#{@_options.wait}s"
+      path: "#{@_service.pathname}?#{qs.stringify query}"
       # long polling so shouldn't pool
       agent: no
-    
-    params.path += "&index=#{@_index}" if @_index?
     
     @_httpRequest = http
       .get params, (res) =>

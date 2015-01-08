@@ -1,4 +1,4 @@
-# Consul integration for RedWire
+# Consul Utilities
 
 Consul integration for RedWire - a dyanmic, high performance, load balancing reverse proxy.
 
@@ -10,7 +10,7 @@ Consul provides a gossip-based, decentralised, dynamic list of servers that impl
 ## Install
 
 ```sh
-npm install redwire redwire-consul
+npm install redwire consul-utils
 ```
 
 Consul integration for RedWire has no dependencies and can be used independently from RedWire, however it works best as a load-balancer handler in RedWire.
@@ -19,7 +19,7 @@ Consul integration for RedWire has no dependencies and can be used independently
 
 ```js
 var RedWire = require('redwire');
-var consul = require('redwire-consul');
+var consul = require('consul-utils');
 
 var redwire = new RedWire({ http: { port: 80 } });
 var services = new consul.Service('localhost:8500', 'web', function(added, removed) {

@@ -1,21 +1,21 @@
 # Consul Utilities
 
-Consul integration for RedWire - a dyanmic, high performance, load balancing reverse proxy.
+A set of utilities to work with consul from Node.js. Not full featured or architected well enough to call an API but a good start.
 
-Consul provides a gossip-based, decentralised, dynamic list of servers that implement a service. This list is watched using long polling and used to keep an internal list of servers up to date. This means as your services come up or go down in consul RedWire will start and stop load balancing to them.
-
-[![BuildStatus](https://secure.travis-ci.org/metocean/redwire.png?branch=master)](http://travis-ci.org/metocean/redwire)
-[![NPM version](https://badge.fury.io/js/redwire.svg)](http://badge.fury.io/js/redwire)
+[![BuildStatus](https://secure.travis-ci.org/metocean/consul-utils.png?branch=master)](http://travis-ci.org/metocean/consul-utils)
+[![NPM version](https://badge.fury.io/js/consul-utils.svg)](http://badge.fury.io/js/consul-utils)
 
 ## Install
 
 ```sh
-npm install redwire consul-utils
+npm install consul-utils
 ```
 
-Consul integration for RedWire has no dependencies and can be used independently from RedWire, however it works best as a load-balancer handler in RedWire.
+Consul Utilities has no dependencies.
 
 ## Example
+
+The service class can be used in [Redwire](https://github.com/metocean/redwire).
 
 ```js
 var RedWire = require('redwire');

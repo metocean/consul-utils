@@ -8,8 +8,11 @@ DiffPool = require('./diff-pool');
 
 module.exports = Service = (function() {
   function Service(httpAddr, serviceId, callback) {
+    this.distributeTls = bind(this.distributeTls, this);
     this.distributeTcp = bind(this.distributeTcp, this);
     this.distributeWs = bind(this.distributeWs, this);
+    this.distributeHttps = bind(this.distributeHttps, this);
+    this.distributeHttp = bind(this.distributeHttp, this);
     this.distribute = bind(this.distribute, this);
     this.next = bind(this.next, this);
     this.members = bind(this.members, this);
@@ -46,13 +49,31 @@ module.exports = Service = (function() {
     this._index = this._index % members.length;
     result = members[this._index];
     this._index++;
-    return "http://" + result.address + ":" + result.port;
+    return result.address + ":" + result.port;
   };
 
   Service.prototype.distribute = function() {
     return (function(_this) {
       return function(mount, url, req, res, next) {
-        req.target = _this.next();
+        req.target = "http://" + (_this.next());
+        return next();
+      };
+    })(this);
+  };
+
+  Service.prototype.distributeHttp = function() {
+    return (function(_this) {
+      return function(mount, url, req, res, next) {
+        req.target = "http://" + (_this.next());
+        return next();
+      };
+    })(this);
+  };
+
+  Service.prototype.distributeHttps = function() {
+    return (function(_this) {
+      return function(mount, url, req, res, next) {
+        req.target = "https://" + (_this.next());
         return next();
       };
     })(this);
@@ -61,13 +82,22 @@ module.exports = Service = (function() {
   Service.prototype.distributeWs = function() {
     return (function(_this) {
       return function(mount, url, req, socket, head, next) {
-        req.target = _this.next();
+        req.target = "http://" + (_this.next());
         return next();
       };
     })(this);
   };
 
   Service.prototype.distributeTcp = function() {
+    return (function(_this) {
+      return function(req, socket, next) {
+        req.target = _this.next();
+        return next();
+      };
+    })(this);
+  };
+
+  Service.prototype.distributeTls = function() {
     return (function(_this) {
       return function(req, socket, next) {
         req.target = _this.next();

@@ -20,16 +20,28 @@ module.exports = class Service
     @_index = @_index % members.length
     result = members[@_index]
     @_index++
-    "http://#{result.address}:#{result.port}"
+    "#{result.address}:#{result.port}"
   
   distribute: => (mount, url, req, res, next) =>
-    req.target = @next()
+    req.target = "http://#{@next()}"
+    next()
+  
+  distributeHttp: => (mount, url, req, res, next) =>
+    req.target = "http://#{@next()}"
+    next()
+  
+  distributeHttps: => (mount, url, req, res, next) =>
+    req.target = "https://#{@next()}"
     next()
   
   distributeWs: => (mount, url, req, socket, head, next) =>
-    req.target = @next()
+    req.target = "http://#{@next()}"
     next()
   
   distributeTcp: => (req, socket, next) =>
+    req.target = @next()
+    next()
+  
+  distributeTls: => (req, socket, next) =>
     req.target = @next()
     next()

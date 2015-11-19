@@ -8,6 +8,7 @@ DiffPool = require('./diff-pool');
 
 module.exports = Service = (function() {
   function Service(httpAddr, serviceId, callback) {
+    this.distributeTcp = bind(this.distributeTcp, this);
     this.distributeWs = bind(this.distributeWs, this);
     this.distribute = bind(this.distribute, this);
     this.next = bind(this.next, this);
@@ -60,6 +61,15 @@ module.exports = Service = (function() {
   Service.prototype.distributeWs = function() {
     return (function(_this) {
       return function(mount, url, req, socket, head, next) {
+        req.target = _this.next();
+        return next();
+      };
+    })(this);
+  };
+
+  Service.prototype.distributeTcp = function() {
+    return (function(_this) {
+      return function(req, socket, next) {
         req.target = _this.next();
         return next();
       };

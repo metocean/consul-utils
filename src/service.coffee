@@ -29,3 +29,7 @@ module.exports = class Service
   distributeWs: => (mount, url, req, socket, head, next) =>
     req.target = @next()
     next()
+  
+  distributeTcp: => (req, socket, next) =>
+    req.target = @next()
+    next()

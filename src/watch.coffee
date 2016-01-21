@@ -61,7 +61,8 @@ module.exports = class Watch
         content = ''
         res.on 'data', (data) => content += data
         res.on 'end', =>
-          @_callback JSON.parse content
+          data = JSON.parse content
+          @_callback data if data?
           @_tick res.headers['x-consul-index']
       .on 'error', (e) => @_handleError e
 

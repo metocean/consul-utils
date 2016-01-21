@@ -89,7 +89,11 @@ module.exports = Watch = (function() {
           return content += data;
         });
         return res.on('end', function() {
-          _this._callback(JSON.parse(content));
+          var data;
+          data = JSON.parse(content);
+          if (data != null) {
+            _this._callback(data);
+          }
           return _this._tick(res.headers['x-consul-index']);
         });
       };

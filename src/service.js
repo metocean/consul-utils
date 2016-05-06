@@ -24,7 +24,10 @@ module.exports = Service = (function() {
         return _this._pool.set(services.map(function(s) {
           return {
             host: s.Node,
-            address: s.Address,
+            id: s.ServiceID,
+            name: s.ServiceName,
+            tags: s.ServiceTags,
+            address: (s.ServiceAddress != null) && s.ServiceAddress !== '' ? s.ServiceAddress : s.Address,
             port: s.ServicePort
           };
         }));

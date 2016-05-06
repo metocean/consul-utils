@@ -8,7 +8,10 @@ module.exports = class Service
     @_watch = new Watch "#{httpAddr}/v1/catalog/service/#{serviceId}", (services) =>
       @_pool.set services.map (s) ->
         host: s.Node
-        address: s.Address
+        id: s.ServiceID
+        name: s.ServiceName
+        tags: s.ServiceTags
+        address: if s.ServiceAddress? and s.ServiceAddress isnt '' then s.ServiceAddress else s.Address
         port: s.ServicePort
   
   end: => @_watch.end()
